@@ -1,8 +1,8 @@
-package me.gavindimpter.minigameplugin.events;
+package me.gavvydizzle.minigameplugin.events;
 
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.boards.MinesweeperBoard;
-import me.gavindimpter.minigameplugin.managers.MinesweeperManager;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.boards.MinesweeperBoard;
+import me.gavvydizzle.minigameplugin.managers.MinesweeperManager;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;

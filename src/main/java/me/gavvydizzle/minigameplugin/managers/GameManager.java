@@ -1,8 +1,7 @@
-package me.gavindimpter.minigameplugin.managers;
+package me.gavvydizzle.minigameplugin.managers;
 
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.boards.GameBoard;
-import org.bukkit.ChatColor;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.boards.GameBoard;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;

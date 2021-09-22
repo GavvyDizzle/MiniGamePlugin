@@ -1,11 +1,11 @@
-package me.gavindimpter.minigameplugin.boards;
+package me.gavvydizzle.minigameplugin.boards;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.blocks.minesweeper.MinesweeperBlock;
-import me.gavindimpter.minigameplugin.blocks.minesweeper.MinesweeperEmptyBlock;
-import me.gavindimpter.minigameplugin.blocks.minesweeper.MinesweeperFilledBlock;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperBlock;
+import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperEmptyBlock;
+import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperFilledBlock;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

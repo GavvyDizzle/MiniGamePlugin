@@ -1,6 +1,6 @@
-package me.gavindimpter.minigameplugin.events;
+package me.gavvydizzle.minigameplugin.events;
 
-import me.gavindimpter.minigameplugin.managers.GameManager;
+import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,7 +1,7 @@
-package me.gavindimpter.minigameplugin.blocks.picross;
+package me.gavvydizzle.minigameplugin.blocks.picross;
 
-import me.gavindimpter.minigameplugin.boards.GameBoard;
-import me.gavindimpter.minigameplugin.boards.PicrossBoard;
+import me.gavvydizzle.minigameplugin.boards.GameBoard;
+import me.gavvydizzle.minigameplugin.boards.PicrossBoard;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

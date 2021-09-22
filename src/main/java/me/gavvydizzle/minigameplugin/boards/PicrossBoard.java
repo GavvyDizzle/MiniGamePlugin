@@ -1,12 +1,12 @@
-package me.gavindimpter.minigameplugin.boards;
+package me.gavvydizzle.minigameplugin.boards;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.blocks.picross.PicrossEmptyBlock;
-import me.gavindimpter.minigameplugin.blocks.picross.PicrossFilledBlock;
-import me.gavindimpter.minigameplugin.blocks.picross.PicrossBlock;
-import me.gavindimpter.minigameplugin.blocks.Block;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.blocks.picross.PicrossEmptyBlock;
+import me.gavvydizzle.minigameplugin.blocks.picross.PicrossFilledBlock;
+import me.gavvydizzle.minigameplugin.blocks.picross.PicrossBlock;
+import me.gavvydizzle.minigameplugin.blocks.Block;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

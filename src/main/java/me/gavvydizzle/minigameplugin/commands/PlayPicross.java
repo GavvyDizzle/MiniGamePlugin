@@ -1,8 +1,8 @@
-package me.gavindimpter.minigameplugin.commands;
+package me.gavvydizzle.minigameplugin.commands;
 
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.boards.PicrossBoard;
-import me.gavindimpter.minigameplugin.managers.PicrossManager;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.boards.PicrossBoard;
+import me.gavvydizzle.minigameplugin.managers.PicrossManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

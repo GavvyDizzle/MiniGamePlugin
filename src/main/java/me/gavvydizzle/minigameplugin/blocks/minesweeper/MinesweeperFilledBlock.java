@@ -1,7 +1,7 @@
-package me.gavindimpter.minigameplugin.blocks.minesweeper;
+package me.gavvydizzle.minigameplugin.blocks.minesweeper;
 
-import me.gavindimpter.minigameplugin.boards.GameBoard;
-import me.gavindimpter.minigameplugin.boards.MinesweeperBoard;
+import me.gavvydizzle.minigameplugin.boards.GameBoard;
+import me.gavvydizzle.minigameplugin.boards.MinesweeperBoard;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;

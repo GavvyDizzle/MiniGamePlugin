@@ -1,6 +1,6 @@
-package me.gavindimpter.minigameplugin.commands;
+package me.gavvydizzle.minigameplugin.commands;
 
-import me.gavindimpter.minigameplugin.managers.GameManager;
+import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

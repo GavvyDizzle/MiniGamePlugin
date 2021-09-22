@@ -1,6 +1,6 @@
-package me.gavindimpter.minigameplugin.boards;
+package me.gavvydizzle.minigameplugin.boards;
 
-import me.gavindimpter.minigameplugin.blocks.Block;
+import me.gavvydizzle.minigameplugin.blocks.Block;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

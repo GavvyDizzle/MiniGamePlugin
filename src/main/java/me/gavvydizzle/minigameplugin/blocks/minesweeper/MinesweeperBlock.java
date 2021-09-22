@@ -1,8 +1,8 @@
-package me.gavindimpter.minigameplugin.blocks.minesweeper;
+package me.gavvydizzle.minigameplugin.blocks.minesweeper;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import me.gavindimpter.minigameplugin.blocks.Block;
-import me.gavindimpter.minigameplugin.boards.GameBoard;
+import me.gavvydizzle.minigameplugin.blocks.Block;
+import me.gavvydizzle.minigameplugin.boards.GameBoard;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

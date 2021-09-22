@@ -1,10 +1,10 @@
-package me.gavindimpter.minigameplugin;
+package me.gavvydizzle.minigameplugin;
 
-import me.gavindimpter.minigameplugin.commands.PlayPicross;
-import me.gavindimpter.minigameplugin.commands.LeaveCommand;
-import me.gavindimpter.minigameplugin.commands.PlayMinesweeper;
-import me.gavindimpter.minigameplugin.events.*;
-import me.gavindimpter.minigameplugin.managers.GameManager;
+import me.gavvydizzle.minigameplugin.commands.PlayPicross;
+import me.gavvydizzle.minigameplugin.commands.LeaveCommand;
+import me.gavvydizzle.minigameplugin.commands.PlayMinesweeper;
+import me.gavvydizzle.minigameplugin.events.*;
+import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

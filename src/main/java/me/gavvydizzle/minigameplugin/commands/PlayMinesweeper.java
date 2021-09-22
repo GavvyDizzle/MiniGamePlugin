@@ -1,8 +1,8 @@
-package me.gavindimpter.minigameplugin.commands;
+package me.gavvydizzle.minigameplugin.commands;
 
-import me.gavindimpter.minigameplugin.MiniGamePlugin;
-import me.gavindimpter.minigameplugin.boards.MinesweeperBoard;
-import me.gavindimpter.minigameplugin.managers.MinesweeperManager;
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.boards.MinesweeperBoard;
+import me.gavvydizzle.minigameplugin.managers.MinesweeperManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
