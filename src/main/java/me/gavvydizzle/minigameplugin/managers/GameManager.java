@@ -13,6 +13,8 @@ public interface GameManager {
     static void removePlayerFromGame(Player p) {
         // Gets where the player was before moving them to the new game
         switch(Objects.requireNonNull(p.getPersistentDataContainer().get(new NamespacedKey(MiniGamePlugin.getInstance(), "currentGame"), PersistentDataType.STRING))) {
+            case "lobby":
+                break;
             case "picross":
                 PicrossManager.getManager().removeGameBoard(p);
                 PicrossManager.getManager().removePlayer(p);

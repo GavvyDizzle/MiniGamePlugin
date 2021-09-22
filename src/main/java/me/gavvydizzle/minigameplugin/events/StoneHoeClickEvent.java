@@ -25,67 +25,71 @@ public class StoneHoeClickEvent implements Listener {
 
     @EventHandler
     public void onStoneHoeClick(PlayerInteractEvent e) {
-        Action a = e.getAction();
+
         Player p = e.getPlayer();
 
-        // If the player is holding a stone hoe, and they right-click or left-click the air
-        if (e.getPlayer().getInventory().getItemInMainHand().equals(new ItemStack(Material.STONE_HOE)) && (a == Action.LEFT_CLICK_AIR || a == Action.RIGHT_CLICK_AIR)) {
+        if (p.getWorld().getName().equalsIgnoreCase((MiniGamePlugin.GAME_WORLD_NAME))) {
 
-            LivingEntity l = e.getPlayer();
-            // Sets block equal to the block the player is targeting to up to a 30 block distance
-            Block block = l.getTargetBlockExact(30);
+            Action a = e.getAction();
 
-            // If the block they are targeting with their crosshair is air
-            if (block == null) {
-                return;
-            }
+            // If the player is holding a stone hoe, and they right-click or left-click the air
+            if (e.getPlayer().getInventory().getItemInMainHand().equals(new ItemStack(Material.STONE_HOE)) && (a == Action.LEFT_CLICK_AIR || a == Action.RIGHT_CLICK_AIR)) {
 
-            GameBoard b = null;
+                LivingEntity l = e.getPlayer();
+                // Sets block equal to the block the player is targeting to up to a 30 block distance
+                Block block = l.getTargetBlockExact(30);
 
-            // Obtains the correct GameBoard the player is in given the game
-            switch(Objects.requireNonNull(p.getPersistentDataContainer().get(new NamespacedKey(MiniGamePlugin.getInstance(), "currentGame"), PersistentDataType.STRING))) {
-                case "picross":
+                // If the block they are targeting with their crosshair is air
+                if (block == null) {
+                    return;
+                }
 
-                    for (PicrossBoard board : PicrossManager.getManager().getGameBoards()) {
-                        if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
-                            b = board;
-                            break;
+                GameBoard b = null;
+
+                // Obtains the correct GameBoard the player is in given the game
+                switch (Objects.requireNonNull(p.getPersistentDataContainer().get(new NamespacedKey(MiniGamePlugin.getInstance(), "currentGame"), PersistentDataType.STRING))) {
+                    case "picross":
+
+                        for (PicrossBoard board : PicrossManager.getManager().getGameBoards()) {
+                            if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
+                                b = board;
+                                break;
+                            }
                         }
-                    }
-                    break;
-                case "minesweeper":
+                        break;
+                    case "minesweeper":
 
-                    for (MinesweeperBoard board : MinesweeperManager.getManager().getGameBoards()) {
-                        if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
-                            b = board;
-                            break;
+                        for (MinesweeperBoard board : MinesweeperManager.getManager().getGameBoards()) {
+                            if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
+                                b = board;
+                                break;
+                            }
                         }
-                    }
-                    break;
-            }
+                        break;
+                }
 
-            // If game over, or the board doesn't exist, don't allow the player to interact with the board
-            if (b == null || b.isGameOver()) {
-                return;
-            }
+                // If game over, or the board doesn't exist, don't allow the player to interact with the board
+                if (b == null || b.isGameOver()) {
+                    return;
+                }
 
-            Location loc = block.getLocation();
+                Location loc = block.getLocation();
 
-            // Checks all the blocks in the GameBoard
-            for (int col = 0; col < b.getGameBoard().length; col++) {
-                for (int row = 0; row < b.getGameBoard()[0].length; row++) {
+                // Checks all the blocks in the GameBoard
+                for (int col = 0; col < b.getGameBoard().length; col++) {
+                    for (int row = 0; row < b.getGameBoard()[0].length; row++) {
 
-                    //If the block hasn't been clicked and the location matches
-                    if (!b.getGameBoard()[col][row].isRevealed() && b.getGameBoard()[col][row].getLocation().equals(loc)) {
+                        //If the block hasn't been clicked and the location matches
+                        if (!b.getGameBoard()[col][row].isRevealed() && b.getGameBoard()[col][row].getLocation().equals(loc)) {
 
-                        if (a == Action.LEFT_CLICK_AIR) {
-                            b.getGameBoard()[col][row].handleClick(b, p, Action.LEFT_CLICK_BLOCK);
+                            if (a == Action.LEFT_CLICK_AIR) {
+                                b.getGameBoard()[col][row].handleClick(b, p, Action.LEFT_CLICK_BLOCK);
+                            } else { // Action = Action.RIGHT_CLICK_AIR
+                                b.getGameBoard()[col][row].handleClick(b, p, Action.RIGHT_CLICK_BLOCK);
+                            }
+
+                            b.checkForGameOver(e.getPlayer());
                         }
-                        else { // Action = Action.RIGHT_CLICK_AIR
-                            b.getGameBoard()[col][row].handleClick(b, p, Action.RIGHT_CLICK_BLOCK);
-                        }
-
-                        b.checkForGameOver(e.getPlayer());
                     }
                 }
             }

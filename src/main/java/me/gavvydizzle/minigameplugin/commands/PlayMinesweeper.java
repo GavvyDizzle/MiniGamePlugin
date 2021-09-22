@@ -19,73 +19,30 @@ public class PlayMinesweeper implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
 
-            if (args.length == 1) {
+            if (p.getWorld().getName().equalsIgnoreCase((MiniGamePlugin.GAME_WORLD_NAME))) {
 
-                //If player is not in a game
-                if (!MinesweeperManager.getManager().isInGame(p)) {
-                    switch (args[0]) {
-                        case "easy":
-                        case "e":
-                            MinesweeperManager.getManager().createGameBoard(9, 9, 10, p);
-                            break;
-                        case "medium":
-                        case "m":
-                            MinesweeperManager.getManager().createGameBoard(16, 16, 40, p);
-                            break;
-                        case "hard":
-                        case "h":
-                            MinesweeperManager.getManager().createGameBoard(30, 16, 99, p);
-                            break;
-                        default:
-                            return false;
-                    }
-                }
-                // If player is already in a game
-                else {
-                    MinesweeperBoard b = null;
-                    for (MinesweeperBoard board : MinesweeperManager.getManager().getGameBoards()) {
-                        if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
-                            b = board;
-                            break;
+                if (args.length == 1) {
+
+                    //If player is not in a game
+                    if (!MinesweeperManager.getManager().isInGame(p)) {
+                        switch (args[0]) {
+                            case "easy":
+                            case "e":
+                                MinesweeperManager.getManager().createGameBoard(9, 9, 10, p);
+                                break;
+                            case "medium":
+                            case "m":
+                                MinesweeperManager.getManager().createGameBoard(16, 16, 40, p);
+                                break;
+                            case "hard":
+                            case "h":
+                                MinesweeperManager.getManager().createGameBoard(30, 16, 99, p);
+                                break;
+                            default:
+                                return false;
                         }
                     }
-                    // Check arena validity
-                    if (b == null) {
-                        p.sendMessage("Play Command: No linked minesweeper board");
-                        return true;
-                    }
-
-                    switch (args[0]) {
-                        case "easy":
-                        case "e":
-                            MinesweeperManager.getManager().createGameBoard(9, 9, 10, p, b.getID() - 1);
-                            break;
-                        case "medium":
-                        case "m":
-                            MinesweeperManager.getManager().createGameBoard(16, 16, 40, p, b.getID() - 1);
-                            break;
-                        case "hard":
-                        case "h":
-                            MinesweeperManager.getManager().createGameBoard(30, 16, 99, p, b.getID() - 1);
-                            break;
-                        default:
-                            return false;
-                    }
-                }
-            }
-            else if ((args.length == 4 && args[0].equals("custom") || args.length == 4 && args[0].equals("c")) && isInteger(args[1]) && isInteger(args[2]) && isInteger(args[3])) {
-
-                int cols = Integer.parseInt(args[1]);
-                int rows = Integer.parseInt(args[2]);
-                int numMines = Integer.parseInt(args[3]);
-
-                if (cols >= MINSIZE && rows >= MINSIZE && cols <= MAXSIZE && rows <= MAXSIZE && numMines >= 1 && numMines <= (cols * rows)) {
-
-                    // If player is not in a game
-                    if (!MinesweeperManager.getManager().isInGame(p)) {
-                        MinesweeperManager.getManager().createGameBoard(cols, rows, numMines, p);
-                    }
-                    // If in game
+                    // If player is already in a game
                     else {
                         MinesweeperBoard b = null;
                         for (MinesweeperBoard board : MinesweeperManager.getManager().getGameBoards()) {
@@ -99,20 +56,62 @@ public class PlayMinesweeper implements CommandExecutor {
                             p.sendMessage("Play Command: No linked minesweeper board");
                             return true;
                         }
-                        MinesweeperManager.getManager().createGameBoard(cols, rows, numMines, p, b.getID() - 1);
+
+                        switch (args[0]) {
+                            case "easy":
+                            case "e":
+                                MinesweeperManager.getManager().createGameBoard(9, 9, 10, p, b.getID() - 1);
+                                break;
+                            case "medium":
+                            case "m":
+                                MinesweeperManager.getManager().createGameBoard(16, 16, 40, p, b.getID() - 1);
+                                break;
+                            case "hard":
+                            case "h":
+                                MinesweeperManager.getManager().createGameBoard(30, 16, 99, p, b.getID() - 1);
+                                break;
+                            default:
+                                return false;
+                        }
                     }
+                } else if ((args.length == 4 && args[0].equals("custom") || args.length == 4 && args[0].equals("c")) && isInteger(args[1]) && isInteger(args[2]) && isInteger(args[3])) {
+
+                    int cols = Integer.parseInt(args[1]);
+                    int rows = Integer.parseInt(args[2]);
+                    int numMines = Integer.parseInt(args[3]);
+
+                    if (cols >= MINSIZE && rows >= MINSIZE && cols <= MAXSIZE && rows <= MAXSIZE && numMines >= 1 && numMines <= (cols * rows)) {
+
+                        // If player is not in a game
+                        if (!MinesweeperManager.getManager().isInGame(p)) {
+                            MinesweeperManager.getManager().createGameBoard(cols, rows, numMines, p);
+                        }
+                        // If in game
+                        else {
+                            MinesweeperBoard b = null;
+                            for (MinesweeperBoard board : MinesweeperManager.getManager().getGameBoards()) {
+                                if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
+                                    b = board;
+                                    break;
+                                }
+                            }
+                            // Check arena validity
+                            if (b == null) {
+                                p.sendMessage("Play Command: No linked minesweeper board");
+                                return true;
+                            }
+                            MinesweeperManager.getManager().createGameBoard(cols, rows, numMines, p, b.getID() - 1);
+                        }
+                    } else {
+                        p.sendMessage("Size: 5x5 to 30x30");
+                        p.sendMessage("Mines: 1 to cols * rows");
+                    }
+                } else if (doesArgsContainCustom(args)) {
+                    p.sendMessage("You need to input the column size, row size and number of mines");
+                    p.sendMessage("Usage: /minesweeper custom <cols> <rows> <mines>");
+                } else {
+                    return false;
                 }
-                else {
-                    p.sendMessage("Size: 5x5 to 30x30");
-                    p.sendMessage("Mines: 1 to cols * rows");
-                }
-            }
-            else if (doesArgsContainCustom(args)) {
-                p.sendMessage("You need to input the column size, row size and number of mines");
-                p.sendMessage("Usage: /minesweeper custom <cols> <rows> <mines>");
-            }
-            else {
-                return false;
             }
         }
         return true;

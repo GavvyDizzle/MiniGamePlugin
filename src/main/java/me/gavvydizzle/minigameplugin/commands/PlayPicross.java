@@ -20,53 +20,52 @@ public class PlayPicross implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
 
-            if (( args.length == 1 || args.length == 2) && isInteger(args[0]) ) {
+            if (p.getWorld().getName().equalsIgnoreCase((MiniGamePlugin.GAME_WORLD_NAME))) {
 
-                int cols = Integer.parseInt(args[0]);
-                int rows;
+                if ((args.length == 1 || args.length == 2) && isInteger(args[0])) {
 
-                // Set rows to the first or second arg
-                if (args.length == 1) {
-                    rows = Integer.parseInt(args[0]);
-                }
-                else if (isInteger(args[1])){
-                    rows = Integer.parseInt(args[1]);
-                }
-                else {
-                    return false;
-                }
+                    int cols = Integer.parseInt(args[0]);
+                    int rows;
 
-                // Check if the arg(s) are within the specified size
-                if (cols <= MAXSIZE && rows <= MAXSIZE && cols >= MINSIZE && rows >= MINSIZE) {
-                    // If the player is not in a game
-                    if (!PicrossManager.getManager().isInGame(p)) {
-                        PicrossManager.getManager().createGameBoard(cols, rows, p);
+                    // Set rows to the first or second arg
+                    if (args.length == 1) {
+                        rows = Integer.parseInt(args[0]);
+                    } else if (isInteger(args[1])) {
+                        rows = Integer.parseInt(args[1]);
+                    } else {
+                        return false;
                     }
-                    // If player in game
-                    else {
-                        PicrossBoard b = null;
-                        for (PicrossBoard board : PicrossManager.getManager().getGameBoards()) {
-                            if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
-                                b = board;
-                                break;
+
+                    // Check if the arg(s) are within the specified size
+                    if (cols <= MAXSIZE && rows <= MAXSIZE && cols >= MINSIZE && rows >= MINSIZE) {
+                        // If the player is not in a game
+                        if (!PicrossManager.getManager().isInGame(p)) {
+                            PicrossManager.getManager().createGameBoard(cols, rows, p);
+                        }
+                        // If player in game
+                        else {
+                            PicrossBoard b = null;
+                            for (PicrossBoard board : PicrossManager.getManager().getGameBoards()) {
+                                if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
+                                    b = board;
+                                    break;
+                                }
                             }
-                        }
-                        // Check arena validity
-                        if (b == null) {
-                            p.sendMessage("Play Command: No linked picross board");
-                            return true;
-                        }
+                            // Check arena validity
+                            if (b == null) {
+                                p.sendMessage("Play Command: No linked picross board");
+                                return true;
+                            }
 
-                        PicrossManager.getManager().createGameBoard(cols, rows, p, b.getID() - 1);
+                            PicrossManager.getManager().createGameBoard(cols, rows, p, b.getID() - 1);
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.RED + "The size must be between " + MINSIZE + " and " + MAXSIZE);
+                        return false;
                     }
-                }
-                else {
-                    p.sendMessage(ChatColor.RED + "The size must be between " + MINSIZE + " and " + MAXSIZE);
+                } else {
                     return false;
                 }
-            }
-            else {
-                return false;
             }
         }
 

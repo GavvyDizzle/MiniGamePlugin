@@ -1,5 +1,6 @@
 package me.gavvydizzle.minigameplugin.events;
 
+import me.gavvydizzle.minigameplugin.MiniGamePlugin;
 import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,8 +13,12 @@ public class PlayerQuitEvent implements Listener {
 
         Player p = e.getPlayer();
 
-        // Remove the game if the player was playing then they left
-        GameManager.removePlayerFromGame(p);
+        if (p.getWorld().getName().equalsIgnoreCase((MiniGamePlugin.GAME_WORLD_NAME))) {
+
+            // Remove the game if the player was playing then they left
+            GameManager.removePlayerFromGame(p);
+
+        }
     }
 
 }

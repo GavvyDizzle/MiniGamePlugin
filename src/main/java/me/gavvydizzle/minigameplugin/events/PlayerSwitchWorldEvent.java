@@ -1,24 +1,25 @@
 package me.gavvydizzle.minigameplugin.events;
 
 import me.gavvydizzle.minigameplugin.MiniGamePlugin;
+import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-public class PlayerJoinEvent implements Listener {
-
-    //TODO - Remove event after creating a hub world
+public class PlayerSwitchWorldEvent implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent e) {
+    public void onPlayerSwitchWorld(PlayerChangedWorldEvent e) {
 
         Player p = e.getPlayer();
 
+        // When the player switches to this world
         if (p.getWorld().getName().equalsIgnoreCase((MiniGamePlugin.GAME_WORLD_NAME))) {
 
             // Sets the NBT tag currentGame for the player with the default value "lobby" every time they join
@@ -28,6 +29,12 @@ public class PlayerJoinEvent implements Listener {
             p.teleport((Location) Objects.requireNonNull(MiniGamePlugin.getInstance().getConfig().get("lobby.spawn-location")));
 
         }
-    }
+        // When the player switches to a different world from this one
+        else {
 
+            // Remove the game if the player was playing then they left
+            GameManager.removePlayerFromGame(p);
+
+        }
+    }
 }
