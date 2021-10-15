@@ -1,9 +1,10 @@
 package me.gavvydizzle.minigameplugin;
 
-import me.gavvydizzle.minigameplugin.commands.PlayPicross;
-import me.gavvydizzle.minigameplugin.commands.LeaveCommand;
-import me.gavvydizzle.minigameplugin.commands.PlayMinesweeper;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import me.gavvydizzle.minigameplugin.commands.*;
 import me.gavvydizzle.minigameplugin.events.*;
+import me.gavvydizzle.minigameplugin.listeners.packetlisteners.SteerVehicleListener;
 import me.gavvydizzle.minigameplugin.managers.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,9 +16,11 @@ import java.util.Objects;
 
 public final class MiniGamePlugin extends JavaPlugin {
 
+    public static String GAME_WORLD_NAME;
+
     private static MiniGamePlugin instance;
 
-    public static String GAME_WORLD_NAME;
+    private static ProtocolManager protocolManager;
 
 
     @Override
@@ -30,18 +33,21 @@ public final class MiniGamePlugin extends JavaPlugin {
             return;
         }
 
+        instance = this;
+
         setupConfig();
         registerEvents();
         registerCommands();
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
+
+        protocolManager.addPacketListener(new SteerVehicleListener(this));
 
         if (!doesWorldExists()) {
             getLogger().severe("*** The world specified in the config.yml file does not exist ***");
             getLogger().severe("*** This plugin will be disabled. ***");
             this.setEnabled(false);
-            return;
         }
-
-        instance = this;
     }
 
     private void setupConfig() {
@@ -65,6 +71,20 @@ public final class MiniGamePlugin extends JavaPlugin {
         getConfig().addDefault("minesweeper.size.min", 5);
         getConfig().addDefault("minesweeper.size.max", 30);
 
+        getConfig().addDefault("snake.spawn-location", new Location(getServer().getWorld(GAME_WORLD_NAME), 0, 0, 0));
+        getConfig().addDefault("snake.first-board-location", new Location(getServer().getWorld(GAME_WORLD_NAME), 0, 0, 0));
+        getConfig().addDefault("snake.distance-apart", 35);
+        getConfig().addDefault("snake.max-games", 10);
+        getConfig().addDefault("snake.size", 15);
+
+        getConfig().addDefault("2048.spawn-location", new Location(getServer().getWorld(GAME_WORLD_NAME), 0, 0, 0));
+        getConfig().addDefault("2048.first-board-location", new Location(getServer().getWorld(GAME_WORLD_NAME), 0, 0, 0));
+        getConfig().addDefault("2048.distance-apart", 20);
+        getConfig().addDefault("2048.max-games", 10);
+        getConfig().addDefault("2048.size", 4);
+
+
+
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
@@ -75,11 +95,14 @@ public final class MiniGamePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerClickBlockEvent(), this);
         getServer().getPluginManager().registerEvents(new StoneHoeClickEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerSwitchHandsEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerClickSignEvent(), this);
     }
 
     private void registerCommands() {
         Objects.requireNonNull(getCommand("picross")).setExecutor(new PlayPicross());
         Objects.requireNonNull(getCommand("minesweeper")).setExecutor(new PlayMinesweeper());
+        Objects.requireNonNull(getCommand("snake")).setExecutor(new PlaySnake());
+        Objects.requireNonNull(getCommand("2048")).setExecutor(new Play2048());
         Objects.requireNonNull(getCommand("leave")).setExecutor(new LeaveCommand());
     }
 
@@ -87,9 +110,12 @@ public final class MiniGamePlugin extends JavaPlugin {
     public void onDisable() {
 
         // Remove the player boards on the event of a crash or shutdown
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Objects.requireNonNull(Bukkit.getWorld(GAME_WORLD_NAME)).getPlayers()) {
             GameManager.removePlayerFromGame(p);
         }
+
+        // Removes the packet listeners associated with this plugin
+        protocolManager.removePacketListeners(this);
     }
 
     private boolean doesWorldExists() {

@@ -1,10 +1,10 @@
 name: Picross
 version: '${project.version}'
-main: me.gavindimpter.minigameplugin.MiniGamePlugin
+main: me.gavvydizzle.minigameplugin.MiniGamePlugin
 api-version: 1.17
 authors: [ GavvyDizzle ]
 description: Lets you play multiple minigames
-depend: [HolographicDisplays]
+depend: [ProtocolLib, HolographicDisplays]
 commands:
   leave:
     description: Sends you to the lobby
@@ -17,3 +17,9 @@ commands:
     description: Starts Minesweeper
     usage: "Usage: /<command> [easy | medium | hard | custom]"
     aliases: [ms]
+  snake:
+    description: Starts Snake
+    usage: "Usage: /<command>"
+  2048:
+    description: Starts 2048
+    usage: "Usage: /<command>"

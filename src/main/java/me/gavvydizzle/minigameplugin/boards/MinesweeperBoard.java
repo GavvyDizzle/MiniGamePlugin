@@ -6,14 +6,12 @@ import me.gavvydizzle.minigameplugin.MiniGamePlugin;
 import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperBlock;
 import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperEmptyBlock;
 import me.gavvydizzle.minigameplugin.blocks.minesweeper.MinesweeperFilledBlock;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class MinesweeperBoard implements GameBoard{
@@ -114,10 +112,8 @@ public class MinesweeperBoard implements GameBoard{
         }
     }
 
-    /**
-     * Sets all blocks in the world for the Board
-     */
-    private void setGameBoardInWorld() {
+    @Override
+    public void setGameBoardInWorld() {
         // Place blocks into the world and removes the layer of pots (sets to air)
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
@@ -138,10 +134,6 @@ public class MinesweeperBoard implements GameBoard{
         }
     }
 
-    /**
-     * Removes all the blocks and Holograms created by the GameBoard
-     * Sets the box bounded by the GameBoard to air
-     */
     @Override
     public void removeGameBoardFromWorld() {
         // Remove blocks
@@ -197,12 +189,6 @@ public class MinesweeperBoard implements GameBoard{
         flagsRemaining.appendTextLine("Flags: " + (numMines - numFlags));
     }
 
-    /**
-     * WIN - If all non-mine blocks are revealed
-     * LOSS - If a mine was clicked
-     *
-     * @param p The player to message if they won or lost
-     */
     @Override
     public void checkForGameOver(Player p) {
         if (isGameOver) {
@@ -315,10 +301,19 @@ public class MinesweeperBoard implements GameBoard{
 
                     // The following code imitates a left click without directly calling the method
 
-                    gameBoard[i][j].setRevealed(true);
-                    gameBoard[i][j].getLocation().getBlock().setType(gameBoard[i][j].getRevealedMaterial());
-                    safeSquareRevealed();
-                    gameBoard[i][j].placeNumAdjacentMines();
+                    if (gameBoard[i][j] instanceof MinesweeperEmptyBlock) {
+                        gameBoard[i][j].setRevealed(true);
+                        gameBoard[i][j].getLocation().getBlock().setType(gameBoard[i][j].getRevealedMaterial());
+                        safeSquareRevealed();
+                        gameBoard[i][j].placeNumAdjacentMines();
+                    }
+                    else {
+                        gameBoard[i][j].setRevealed(true);
+                        gameBoard[i][j].getLocation().getBlock().setType(gameBoard[i][j].getRevealedMaterial());
+                        isGameOver = true;
+                        Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).playSound(Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
+                    }
+
 
                     if ( gameBoard[i][j].getNumAdjacentMines() == 0 ) {
                         revealEmptyAdjacentTiles(i, j);

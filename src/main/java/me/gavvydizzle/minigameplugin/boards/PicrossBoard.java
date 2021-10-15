@@ -73,27 +73,22 @@ public class PicrossBoard implements GameBoard{
             for (int row = 0; row < rows; row++) {
                 double rand = Math.random();
                 if (rand < 0.5) {
-                    gameBoard[col][row] = new PicrossFilledBlock( new Location(world, x - col, y + row, z));
+                    gameBoard[col][row] = new PicrossFilledBlock(new Location(world, x - col, y + row, z));
                     numFilledTiles++;
                 }
                 else {
-                    gameBoard[col][row] = new PicrossEmptyBlock( new Location(world, x - col, y + row, z));
+                    gameBoard[col][row] = new PicrossEmptyBlock(new Location(world, x - col, y + row, z));
                 }
             }
         }
     }
 
-    /**
-     * Sets all blocks in the world for the Board
-     */
-    private void setGameBoardInWorld() {
+    @Override
+    public void setGameBoardInWorld() {
         // Place blocks into the world and removes the layer of buttons (sets to air)
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
                 gameBoard[col][row].getLocation().getBlock().setType( gameBoard[col][row].getMaterial() );
-                Location buttonLayer = new Location(originLocation.getWorld(), gameBoard[col][row].getLocation().getBlockX(), gameBoard[col][row].getLocation().getBlockY(), gameBoard[col][row].getLocation().getBlockZ());
-                buttonLayer.setZ( buttonLayer.getBlockZ() - 1 );
-                buttonLayer.getBlock().setType( Material.AIR );
             }
         }
         // Sets black outline
@@ -116,10 +111,6 @@ public class PicrossBoard implements GameBoard{
         }
     }
 
-    /**
-     * Removes all the blocks and Holograms created by the GameBoard
-     * Sets the box bounded by the GameBoard to air
-     */
     @Override
     public void removeGameBoardFromWorld() {
 
@@ -221,12 +212,8 @@ public class PicrossBoard implements GameBoard{
         }
     }
 
-    /**
-     * WIN - If all blue blocks are revealed and no mistakes were made
-     * LOSS - If all blue blocks are revealed and at least one mistake was made
-     *
-     * @param p The player to message if they won or lost
-     */
+    // WIN - If all blue blocks are revealed and no mistakes were made
+    // LOSS - If all blue blocks are revealed and at least one mistake was made
     public void checkForGameOver(Player p) {
         if (!isGameOver && filledTilesClicked == numFilledTiles && isPerfect) {
             p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You win!");

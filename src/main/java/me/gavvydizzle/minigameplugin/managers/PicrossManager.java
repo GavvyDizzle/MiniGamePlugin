@@ -22,16 +22,16 @@ public class PicrossManager implements GameManager{
     private static PicrossManager picrossManager;
 
     // Distance all boards are from one another
-    private static int BLOCKS_APART = MiniGamePlugin.getInstance().getConfig().getInt("picross.distance-apart");
+    private static final int BLOCKS_APART = MiniGamePlugin.getInstance().getConfig().getInt("picross.distance-apart");
 
     // The location of the origin of the first GameBoard of this type
-    private static Location ORIGIN_LOCATION = MiniGamePlugin.getInstance().getConfig().getLocation("picross.first-board-location");
+    private static final Location ORIGIN_LOCATION = MiniGamePlugin.getInstance().getConfig().getLocation("picross.first-board-location");
 
     // List of all current boards
-    private GameBoard[] gameBoards = new PicrossBoard[MiniGamePlugin.getInstance().getConfig().getInt("picross.max-games")];
+    private final GameBoard[] gameBoards = new PicrossBoard[MiniGamePlugin.getInstance().getConfig().getInt("picross.max-games")];
 
     // List of all players currently playing this game type
-    private ArrayList<UUID> players = new ArrayList<>();
+    private final ArrayList<UUID> players = new ArrayList<>();
 
 
     // METHODS //
@@ -39,7 +39,7 @@ public class PicrossManager implements GameManager{
     private PicrossManager() {} // Prevent instantiation
 
     /**
-     * @return an instance of this class
+     * @return An instance of this class.
      */
     public static PicrossManager getManager() {
         if (picrossManager == null) {
@@ -49,12 +49,12 @@ public class PicrossManager implements GameManager{
     }
 
     /**
-     * Creates a new picross game of size (cols x rows) for player p at the location specified by the game's ID
+     * Creates a new picross game of size (cols x rows) for player p at the location specified by the game's ID.
      *
-     * @param cols the number of columns in the board
-     * @param rows the number of columns in the board
-     * @param p the player wishing to play
-     * @return the arena created
+     * @param cols The number of columns in the board.
+     * @param rows The number of columns in the board.
+     * @param p The player wishing to play.
+     * @return The GameBoard created.
      */
     public GameBoard createGameBoard(int cols, int rows, Player p) {
         if (isInGame(p)) {
@@ -93,16 +93,16 @@ public class PicrossManager implements GameManager{
     }
 
     /**
-     * Creates a new picross game of size (cols x rows) for player p at the location of the previous one
-     * To only be called when the player is assigned to a game (because the ID is known)
+     * Creates a new picross game of size (cols x rows) for player p at the location of the previous one.
+     * To only be called when the player is assigned to a game (because the ID is known).
      *
-     * @param cols the number of columns in the board
-     * @param rows the number of columns in the board
-     * @param p the player wishing to play
-     * @param index the index of GameBoards to place the new PicrossBoard in
-     * @return the arena created
+     * @param cols The number of columns in the board.
+     * @param rows The number of columns in the board.
+     * @param p The player wishing to play.
+     * @param index The index of gameBoards[] to place the new PicrossBoard in.
+     * @return The GameBoard created.
      */
-    public PicrossBoard createGameBoard(int cols, int rows, Player p, int index) {
+    public GameBoard createGameBoard(int cols, int rows, Player p, int index) {
 
         this.gameBoards[index].removeGameBoardFromWorld();
         PicrossBoard b = new PicrossBoard(cols, rows, p, gameBoards[index].getOriginLocation(), index + 1);
@@ -111,21 +111,12 @@ public class PicrossManager implements GameManager{
         return b;
     }
 
-    /**
-     * Removes the player from their current board and deletes that board.
-     * Called when the player leaves/quits the game or the server
-     *
-     * The player is allowed to not be in game, a check
-     * will be performed to ensure the validity of the arena
-     *
-     * @param p the player and player's board to remove
-     */
     @Override
     public void removeGameBoard(Player p) {
-        PicrossBoard b = null;
+        GameBoard b = null;
 
         // Searches each picross instance for the player
-        for (PicrossBoard board : (PicrossBoard[]) gameBoards) {
+        for (GameBoard board : gameBoards) {
             if (board != null && board.getPlayerUUID().equals(p.getUniqueId())) {
                 b = board;
                 break;
@@ -134,49 +125,26 @@ public class PicrossManager implements GameManager{
 
         // Check arena validity
         if (b == null) {
-            p.sendMessage("You can't leave a game that doesn't exist - picross removeGameBoard");
             return;
         }
 
         // Remove board from board list
         gameBoards[b.getID() - 1].removeGameBoardFromWorld();
         gameBoards[b.getID() - 1] = null;
-        p.sendMessage(ChatColor.GRAY + "Removed you from the Picross game");
-
     }
 
-    /**
-     * Adds the player to this game's player list
-     * Sets their currentGame to this game's identifier in config.yml
-     *
-     * @param p the player to add
-     */
     @Override
     public void addPlayer(Player p) {
         players.add(p.getUniqueId());
         p.getPersistentDataContainer().set(new NamespacedKey(MiniGamePlugin.getInstance(), "currentGame"), PersistentDataType.STRING, "picross");
     }
 
-    /**
-     * Removes the player from this game's player list
-     * Sets their currentGame to "lobby"
-     * Teleports the player to the lobby
-     *
-     * @param p the player to remove
-     */
-    @Override
     public void removePlayer(Player p) {
         players.remove(p.getUniqueId());
         p.getPersistentDataContainer().set(new NamespacedKey(MiniGamePlugin.getInstance(), "currentGame"), PersistentDataType.STRING, "lobby");
         p.teleport((Location) Objects.requireNonNull(MiniGamePlugin.getInstance().getConfig().get("lobby.spawn-location")));
     }
 
-    /**
-     * Checks if the player is the game by checking the "players" ArrayList
-     *
-     * @param p the player to check
-     * @return true if the player is in a game
-     */
     @Override
     public boolean isInGame(Player p) {
         for (UUID player : players) {
@@ -186,9 +154,6 @@ public class PicrossManager implements GameManager{
         return false;
     }
 
-    /**
-     * @return the gameBoards array
-     */
     public PicrossBoard[] getGameBoards() {
         return (PicrossBoard[]) gameBoards;
     }
