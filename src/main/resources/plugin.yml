@@ -1,25 +1,12 @@
-name: Picross
+name: MiniGamePlugin
 version: '${project.version}'
-main: me.gavvydizzle.minigameplugin.MiniGamePlugin
-api-version: 1.17
-authors: [ GavvyDizzle ]
-description: Lets you play multiple minigames
-depend: [ProtocolLib, HolographicDisplays]
+main: com.github.gavvydizzle.minigameplugin.MiniGamePlugin
+api-version: '1.20'
+authors: [GavvyDizzle]
+description: Plugin containing multiple minigames
+depend: [DecentHolograms, ProtocolLib, ServerUtils]
 commands:
-  leave:
-    description: Sends you to the lobby
-    usage: /<command>
-    aliases: [lobby, l]
-  picross:
-    description: Starts Picross
-    usage: "Usage: /<command> [int] <[int]>"
-  minesweeper:
-    description: Starts Minesweeper
-    usage: "Usage: /<command> [easy | medium | hard | custom]"
-    aliases: [ms]
-  snake:
-    description: Starts Snake
-    usage: "Usage: /<command>"
-  2048:
-    description: Starts 2048
-    usage: "Usage: /<command>"
+  minigame:
+    aliases: [mg]
+    description: MiniGame commands
+    permission: minigameplugin.player
